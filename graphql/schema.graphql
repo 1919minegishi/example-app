@@ -1,0 +1,23 @@
+scalar DateTime
+    @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
+
+type Query {
+    #ツイートを全て取得
+    tweets: [Tweet!]! @all
+}
+
+type Mutation {
+    #ツイート作成
+    createTweet(content: String!): Tweet! @create
+
+    #ツイートアップデート
+    updateTweet(id: ID!, content: String!): Tweet! @update
+
+    #ツイート削除
+    deleteTweet(id: ID!): Tweet! @delete
+}
+
+type Tweet {
+    id: ID!
+    content: String!
+}
