@@ -53,6 +53,22 @@ services:
         networks:
         - laravel-network
 
+    # React フロントエンド
+    front:
+        container_name: react_front
+        build:
+            context: ./front
+            dockerfile: Dockerfile
+        volumes:
+            - ./front:/app
+            - /app/node_modules # node_modules はコンテナ内で管理
+        ports:
+            - "3000:3000"
+        depends_on:
+            - app
+        stdin_open: true
+        tty: true
+
 # コンテナ間で通信するためのネットワークを定義
 networks:
     laravel-network:
