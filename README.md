@@ -17,3 +17,6 @@ npx create-react-app front --template typescript
 
 React
 http://localhost:3000/
+
+
+http://localhost:3000/mypage
