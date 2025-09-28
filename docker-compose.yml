@@ -1,0 +1,80 @@
+# docker-composeのバージョン
+version: "3"
+
+# コンテナ定義
+services:
+#    # Laravelアプリケーションコンテナ
+#    app:
+#        build:
+#            context: ./docker/app
+#            dockerfile: Dockerfile
+#        container_name: laravel_app
+#        restart: always
+#        volumes:
+#            - ./:/var/www/html
+#        networks:
+#            - laravel-network
+#
+#    # Nginxコンテナ
+#    nginx:
+#        image: nginx:alpine
+#        container_name: laravel_nginx
+#        restart: always
+#        ports:
+#            - "8080:80"
+#        volumes:
+#            - ./:/var/www/html
+#            - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+#        depends_on:
+#            - app
+#        networks:
+#            - laravel-network
+
+    # DBサーバー
+    db:
+        # コンテナ名
+        container_name: "exsample_db2"
+        # コンテナの作成に使用するDockerfileのパス
+        build:
+          dockerfile: "./docker/db/Dockerfile"
+        # ホスト側のポート:コンテナ側のポートを指定
+        ports:
+          - "3307:3306"
+        # 環境変数の指定
+        environment:
+          - "MYSQL_ROOT_PASSWORD=root"
+          - "MYSQL_DATABASE=test"
+          - "MYSQL_USER=dev"
+          - "MYSQL_PASSWORD=dev"
+        # srcディレクトリ内のファイルをコンテナ内の~/var/www/html配下にマウント
+        volumes:
+          - ./docker/db/my.cnf:/etc/mysql/conf.d/my.cnf
+          - ./docker/db/data:/var/lib/mysql
+#        networks:
+#        - laravel-network
+
+#    # React フロントエンド
+#    front:
+#        container_name: react_front
+#        build:
+#            context: ./front
+#            dockerfile: Dockerfile
+#        volumes:
+#            - ./front:/app
+#            - /app/node_modules # node_modules はコンテナ内で管理
+#        ports:
+#            - "3000:3000"
+#        depends_on:
+#            - app
+#        stdin_open: true
+#        tty: true
+#
+# コンテナ間で通信するためのネットワークを定義
+#networks:
+#    laravel-network:
+#        driver: bridge
+
+# データを永続化するためのボリューム
+volumes:
+    dbdata:
+        driver: local
