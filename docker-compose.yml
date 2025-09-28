@@ -30,6 +30,40 @@ services:
 #        networks:
 #            - laravel-network
 
+    # ----------------------------------------
+    # PHP Application (Laravelの実行環境)
+    # ----------------------------------------
+    app:
+        build:
+            context: ./docker/app
+            dockerfile: Dockerfile
+        container_name: laravel_app
+        volumes:
+            # プロジェクトコードをコンテナと共有
+            - .:/var/www/html
+        # Nginxとの通信のためにポートを公開（外部に公開はしない）
+        expose:
+            - 9000
+        depends_on:
+            - db
+
+    # ----------------------------------------
+    # Web サーバー (Nginx)
+    # ----------------------------------------
+    nginx:
+        image: nginx:stable-alpine
+        container_name: laravel_nginx
+        # 外部からポート80でアクセスできるようにする
+        ports:
+            - "8080:80"
+        volumes:
+            # プロジェクトコードとNginxの設定ファイルを共有
+            - .:/var/www/html
+            - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+        depends_on:
+            - app
+            - db
+
     # DBサーバー
     db:
         # コンテナ名
@@ -48,8 +82,10 @@ services:
           - "MYSQL_PASSWORD=dev"
         # srcディレクトリ内のファイルをコンテナ内の~/var/www/html配下にマウント
         volumes:
-          - ./docker/db/my.cnf:/etc/mysql/conf.d/my.cnf
-          - ./docker/db/data:/var/lib/mysql
+#          - ./docker/db/my.cnf:/etc/mysql/conf.d/my.cnf
+#          - ./docker/db/data:/var/lib/mysql
+        # データを永続化するためのボリューム
+        - db_data:/var/lib/mysql
 #        networks:
 #        - laravel-network
 
@@ -76,5 +112,4 @@ services:
 
 # データを永続化するためのボリューム
 volumes:
-    dbdata:
-        driver: local
+    db_data:

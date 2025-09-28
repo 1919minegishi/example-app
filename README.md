@@ -46,3 +46,23 @@ mine@mine:~/project/develop/my-react-app$ npm -v
 mine@mine:~/project/develop/my-react-app$ node -v
 v22.17.0
 ```
+
+```
+root@35bbe7c2e683:/var/www/html# php -v
+PHP 8.1.33 (cli) (built: Sep  8 2025 21:24:37) (NTS)
+Copyright (c) The PHP Group
+Zend Engine v4.1.33, Copyright (c) Zend Technologies
+    with Zend OPcache v8.1.33, Copyright (c), by Zend Technologies
+
+root@35bbe7c2e683:/var/www/html# composer -V
+Composer version 2.8.12 2025-09-19 13:41:59
+PHP version 8.1.33 (/usr/local/bin/php)
+Run the "diagnose" command to get more detailed diagnostics output.
+
+root@35bbe7c2e683:/var/www/html# npm -v
+9.2.0
+
+root@35bbe7c2e683:/var/www/html# node -v
+v20.19.2
+
+```
